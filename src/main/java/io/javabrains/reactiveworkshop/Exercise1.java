@@ -36,16 +36,11 @@ public class Exercise1 {
 
         //4)  Print the first number in intNumbersStream that's greater than 5.
         //  If nothing is found, print -1
-        System.out.println("Print the first number in intNumbersStream that's greater than 5\n");  
-        int res = -1;
-        List<Integer> list = StreamSources.intNumbersStream()
+        System.out.println("Print the first number in intNumbersStream that's greater than 5.");
+        StreamSources.intNumbersStream()
         .filter(elem -> elem > 5)
-        .collect(Collectors.toList());
-        
-        if(!list.isEmpty() || list.size() != 0) {
-        	res = list.get(0);
-        }
-        System.out.println("res :: "+res);
+        .findFirst()
+        .ifPresentOrElse(num -> System.out.println(num), () -> System.out.println(-1));
         
 
         //5) Print first names of all users in userStream
@@ -53,18 +48,25 @@ public class Exercise1 {
         StreamSources.userStream()
         .forEach(user -> System.out.println(user.getFirstName()));
         
+//        StreamSources.userStream()
+//        .map(user -> user.getFirstName())         //This also will work
+//        .forEach(firstName -> System.out.println(firstName));
+        
         
 
         //6) Print first names in userStream for users that have IDs from number stream
-        System.out.println("Print first names in userStream for users that have IDs from number stream\n");
+        //approach 1
+        System.out.println("Print first names in userStream for users that have IDs from number stream....approach 1\n");
         StreamSources.userStream()
-        .forEach(user -> {
-        	StreamSources.intNumbersStream().forEach(id -> {
-        		if(user.getId() == id) {
-            		System.out.println(user.getFirstName());
-            	}
-        	});
-        });
+        .filter(user -> StreamSources.intNumbersStream().anyMatch(id -> id == user.getId()))
+        .map(user -> user.getFirstName())
+        .forEach(name -> System.out.println(name));
+        
+        //approach 2
+        System.out.println("Print first names in userStream for users that have IDs from number stream....approach 2\n");
+        StreamSources.intNumbersStream()
+        .flatMap(id -> StreamSources.userStream().filter(user -> user.getId() == id))   //we use flatMap instead of map when we are returning a stream
+        .forEach(user -> System.out.println(user.getFirstName()));
         
 
         System.out.println("-----------------------------------------------------------------------");
