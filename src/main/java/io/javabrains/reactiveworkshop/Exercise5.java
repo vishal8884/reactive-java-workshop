@@ -13,13 +13,13 @@ public class Exercise5 {
 
         // Use ReactiveSources.intNumberMono() and ReactiveSources.userMono()
         // Subscribe to a flux using the error and completion hooks
-//    	ReactiveSources.intNumbersFlux().subscribe(num -> System.out.println(num),
-//    			err -> System.out.println(err),
-//    			() -> System.out.println("numbersFlux Completed"));
-//    	
-//    	ReactiveSources.userFlux().subscribe(user -> System.out.println(user),
-//    			err -> System.out.println(err),                   //optional   consumer which takes throwable and prints it
-//    			() -> System.out.println("User flux completed")); //optional   consumer which says completed at last
+    	ReactiveSources.intNumbersFlux().subscribe(num -> System.out.println(num),
+    			err -> System.out.println(err),
+    			() -> System.out.println("numbersFlux Completed"));
+    	
+    	ReactiveSources.userFlux().subscribe(user -> System.out.println(user),
+    			err -> System.out.println(err),                   //optional   consumer which takes throwable and prints it
+    			() -> System.out.println("User flux completed")); //optional   consumer which says completed at last
 
         // 2) Subscribe to a flux using an implementation of BaseSubscriber
     	System.out.println("Subscribe to a flux using an implementation of BaseSubscriber");
@@ -33,7 +33,7 @@ public class Exercise5 {
 
 }
 
-
+//This is related to back pressure = getting amount of data based on requirement...ability to stop receiving data at any point of time
 class MySubscriber<T> extends BaseSubscriber<T>{
 	@Override
 	protected void hookOnSubscribe(Subscription subscription) {
